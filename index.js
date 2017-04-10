@@ -125,36 +125,36 @@ requirejs.optimize({
     generateSourceMaps: true,
     optimize: 'none',
     include: ['b', 'c', 'd'],
-    exclude: ['a'],
+    exclude: ['a', 'nodeps'],
     onBuildRead: (moduleName, filePath, contents) => {
-        log('build/b-c-d-exclude-a.js', moduleName, filePath);
+        log('build/b-c-d-exclude-a-nodeps.js', moduleName, filePath);
         return contents;
     },
-    out: 'build/b-c-d-exclude-a.js'
-}, () => printLog('build/b-c-d-exclude-a.js'));
+    out: 'build/b-c-d-exclude-a-nodeps.js'
+}, () => printLog('build/b-c-d-exclude-a-nodeps.js'));
 
 requirejs.optimize({
     baseUrl: 'src',
     generateSourceMaps: true,
     optimize: 'none',
     include: ['b', 'c', 'd'],
-    excludeShallow: ['a'],
+    excludeShallow: ['a', 'nodeps'],
     onBuildRead: (moduleName, filePath, contents) => {
-        log('build/b-c-d-excludeShallow-a.js', moduleName, filePath);
+        log('build/b-c-d-excludeShallow-a-nodeps.js', moduleName, filePath);
         return contents;
     },
-    out: 'build/b-c-d-excludeShallow-a.js'
-}, () => printLog('build/b-c-d-excludeShallow-a.js'));
+    out: 'build/b-c-d-excludeShallow-a-nodeps.js'
+}, () => printLog('build/b-c-d-excludeShallow-a-nodeps.js'));
 
 requirejs.optimize({
     baseUrl: 'src',
     generateSourceMaps: true,
     optimize: 'none',
     include: ['b', 'c', 'd'],
-    stubModules: ['a'],
+    stubModules: ['a', 'nodeps'],
     onBuildRead: (moduleName, filePath, contents) => {
-        log('build/b-c-d-stubModules-a.js', moduleName, filePath);
+        log('build/b-c-d-stubModules-a-nodeps.js', moduleName, filePath);
         return contents;
     },
-    out: 'build/b-c-d-stubModules-a.js'
-}, () => printLog('build/b-c-d-stubModules-a.js'));
+    out: 'build/b-c-d-stubModules-a-nodeps.js'
+}, () => printLog('build/b-c-d-stubModules-a-nodeps.js'));
