@@ -1,160 +1,77 @@
+const fs = require('fs');
+const path = require('path');
+
 const requirejs = require('requirejs');
 
 let logs = {};
-function log(name) {
+
+function log(name, message) {
     logs[name] = logs[name] || [];
-    logs[name].push(Array.prototype.slice.call(arguments, 1));
+    logs[name].push(message);
 }
-function printLog(name) {
-    console.log("\nLog for " + name);
+
+function writeLog(name) {
+    let result = '';
     for (var i = 0; i < logs[name].length; i++) {
-        console.log.apply(console, logs[name][i]);
+        result += `${logs[name][i]}\n`;
     }
+    fs.writeFileSync(`build/${name}.log`, result);
 }
 
-requirejs.optimize({
-    baseUrl: 'src',
-    generateSourceMaps: true,
-    optimize: 'none',
+function runBuild(config) {
+    let name = JSON.stringify(config).replace(/[^a-z0-9]+/ig, '-').replace(/^-|-$/g, '');
+    let baseConfig = {
+        baseUrl: 'src',
+        generateSourceMaps: true,
+        optimize: 'none',
+        onBuildRead: (moduleName, filePath, contents) => {
+            let relativePath = path.relative(process.cwd(), filePath)
+            log(name, `Read module "${moduleName}" from ${relativePath}`);
+            return contents;
+        },
+        out: `build/${name}.js`
+    };
+    for (var key in config) {
+        baseConfig[key] = config[key];
+    }
+    requirejs.optimize(baseConfig, () => writeLog(name));
+}
+
+
+runBuild({
     include: ['a', 'c', 'd'],
-    onBuildRead: (moduleName, filePath, contents) => {
-        log('build/a-c-d.js', moduleName, filePath);
-        return contents;
-    },
-    out: 'build/a-c-d.js'
-}, () => printLog('build/a-c-d.js'));
+});
 
-
-
-requirejs.optimize({
-    baseUrl: 'src',
-    generateSourceMaps: true,
-    optimize: 'none',
+runBuild({
     include: ['a', 'c', 'd'],
-    exclude: ['b'],
-    onBuildRead: (moduleName, filePath, contents) => {
-        log('build/a-c-d-exclude-b.js', moduleName, filePath);
-        return contents;
-    },
-    out: 'build/a-c-d-exclude-b.js'
-}, () => printLog('build/a-c-d-exclude-b.js'));
+    exclude: ['b', 'nodeps'],
+});
 
-requirejs.optimize({
-    baseUrl: 'src',
-    generateSourceMaps: true,
-    optimize: 'none',
+runBuild({
     include: ['a', 'c', 'd'],
-    excludeShallow: ['b'],
-    onBuildRead: (moduleName, filePath, contents) => {
-        log('build/a-c-d-excludeShallow-b.js', moduleName, filePath);
-        return contents;
-    },
-    out: 'build/a-c-d-excludeShallow-b.js'
-}, () => printLog('build/a-c-d-excludeShallow-b.js'));
+    excludeShallow: ['b', 'nodeps'],
+});
 
-requirejs.optimize({
-    baseUrl: 'src',
-    generateSourceMaps: true,
-    optimize: 'none',
+runBuild({
     include: ['a', 'c', 'd'],
-    stubModules: ['b'],
-    onBuildRead: (moduleName, filePath, contents) => {
-        log('build/a-c-d-stubModules-b.js', moduleName, filePath);
-        return contents;
-    },
-    out: 'build/a-c-d-stubModules-b.js'
-}, () => printLog('build/a-c-d-stubModules-b.js'));
+    stubModules: ['b', 'nodeps'],
+});
 
-
-
-requirejs.optimize({
-    baseUrl: 'src',
-    generateSourceMaps: true,
-    optimize: 'none',
-    include: ['a', 'b', 'c', 'd'],
-    exclude: ['b'],
-    onBuildRead: (moduleName, filePath, contents) => {
-        log('build/a-b-c-d-exclude-b.js', moduleName, filePath);
-        return contents;
-    },
-    out: 'build/a-b-c-d-exclude-b.js'
-}, () => printLog('build/a-b-c-d-exclude-b.js'));
-
-requirejs.optimize({
-    baseUrl: 'src',
-    generateSourceMaps: true,
-    optimize: 'none',
-    include: ['a', 'b', 'c', 'd'],
-    excludeShallow: ['b'],
-    onBuildRead: (moduleName, filePath, contents) => {
-        log('build/a-b-c-d-excludeShallow-b.js', moduleName, filePath);
-        return contents;
-    },
-    out: 'build/a-b-c-d-excludeShallow-b.js'
-}, () => printLog('build/a-b-c-d-excludeShallow-b.js'));
-
-requirejs.optimize({
-    baseUrl: 'src',
-    generateSourceMaps: true,
-    optimize: 'none',
-    include: ['a', 'b', 'c', 'd'],
-    stubModules: ['b'],
-    onBuildRead: (moduleName, filePath, contents) => {
-        log('build/a-b-c-d-stubModules-b.js', moduleName, filePath);
-        return contents;
-    },
-    out: 'build/a-b-c-d-stubModules-b.js'
-}, () => printLog('build/a-b-c-d-stubModules-b.js'));
-
-
-
-requirejs.optimize({
-    baseUrl: 'src',
-    generateSourceMaps: true,
-    optimize: 'none',
+runBuild({
     include: ['b', 'c', 'd'],
-    onBuildRead: (moduleName, filePath, contents) => {
-        log('build/b-c-d.js', moduleName, filePath);
-        return contents;
-    },
-    out: 'build/b-c-d.js'
-}, () => printLog('build/b-c-d.js'));
+});
 
-requirejs.optimize({
-    baseUrl: 'src',
-    generateSourceMaps: true,
-    optimize: 'none',
+runBuild({
     include: ['b', 'c', 'd'],
     exclude: ['a', 'nodeps'],
-    onBuildRead: (moduleName, filePath, contents) => {
-        log('build/b-c-d-exclude-a-nodeps.js', moduleName, filePath);
-        return contents;
-    },
-    out: 'build/b-c-d-exclude-a-nodeps.js'
-}, () => printLog('build/b-c-d-exclude-a-nodeps.js'));
+});
 
-requirejs.optimize({
-    baseUrl: 'src',
-    generateSourceMaps: true,
-    optimize: 'none',
+runBuild({
     include: ['b', 'c', 'd'],
     excludeShallow: ['a', 'nodeps'],
-    onBuildRead: (moduleName, filePath, contents) => {
-        log('build/b-c-d-excludeShallow-a-nodeps.js', moduleName, filePath);
-        return contents;
-    },
-    out: 'build/b-c-d-excludeShallow-a-nodeps.js'
-}, () => printLog('build/b-c-d-excludeShallow-a-nodeps.js'));
+});
 
-requirejs.optimize({
-    baseUrl: 'src',
-    generateSourceMaps: true,
-    optimize: 'none',
+runBuild({
     include: ['b', 'c', 'd'],
     stubModules: ['a', 'nodeps'],
-    onBuildRead: (moduleName, filePath, contents) => {
-        log('build/b-c-d-stubModules-a-nodeps.js', moduleName, filePath);
-        return contents;
-    },
-    out: 'build/b-c-d-stubModules-a-nodeps.js'
-}, () => printLog('build/b-c-d-stubModules-a-nodeps.js'));
+});
