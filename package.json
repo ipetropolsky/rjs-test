@@ -1,0 +1,14 @@
+{
+  "name": "rjs-test",
+  "version": "1.0.0",
+  "description": "Test environment for r.js",
+  "main": "index.js",
+  "dependencies": {
+    "madge": "^1.6.0",
+    "requirejs": "^2.3.3"
+  },
+  "scripts": {
+    "build": "node index.js",
+    "scheme": "node generate-scheme.js"
+  }
+}
