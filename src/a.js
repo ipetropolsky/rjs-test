@@ -1,3 +1,3 @@
-define(['nodeps'], function(nodeps) {
+define(['nodeps', 'nodefine'], function(nodeps) {
     console.log('Module A');
 });

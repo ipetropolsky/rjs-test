@@ -44,17 +44,17 @@ runBuild({
 
 runBuild({
     include: ['a', 'c', 'd'],
-    exclude: ['b', 'nodeps'],
+    exclude: ['b', 'nodeps', 'nodefine'],
 });
 
 runBuild({
     include: ['a', 'c', 'd'],
-    excludeShallow: ['b', 'nodeps'],
+    excludeShallow: ['b', 'nodeps', 'nodefine'],
 });
 
 runBuild({
     include: ['a', 'c', 'd'],
-    stubModules: ['b', 'nodeps'],
+    stubModules: ['b', 'nodeps', 'nodefine'],
 });
 
 runBuild({
@@ -63,15 +63,34 @@ runBuild({
 
 runBuild({
     include: ['b', 'c', 'd'],
-    exclude: ['a', 'nodeps'],
+    exclude: ['a', 'nodeps', 'nodefine'],
 });
 
 runBuild({
     include: ['b', 'c', 'd'],
-    excludeShallow: ['a', 'nodeps'],
+    excludeShallow: ['a', 'nodeps', 'nodefine'],
 });
 
 runBuild({
     include: ['b', 'c', 'd'],
-    stubModules: ['a', 'nodeps'],
+    stubModules: ['a', 'nodeps', 'nodefine'],
+});
+
+runBuild({
+    include: ['c', 'd'],
+});
+
+runBuild({
+    include: ['c', 'd'],
+    exclude: ['nodeps', 'nodefine'],
+});
+
+runBuild({
+    include: ['c', 'd'],
+    excludeShallow: ['nodeps', 'nodefine'],
+});
+
+runBuild({
+    include: ['c', 'd'],
+    stubModules: ['nodeps', 'nodefine'],
 });
