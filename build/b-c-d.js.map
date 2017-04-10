@@ -1,0 +1,24 @@
+{
+  "version": 3,
+  "sources": [
+    "nodeps.js",
+    "a.js",
+    "b1.js",
+    "b2.js",
+    "b.js",
+    "c.js",
+    "d.js"
+  ],
+  "names": [],
+  "mappings": "AAAA;AACA;AACA;AACA,ACHA;AACA;AACA;AACA,ACHA;AACA;AACA;AACA,ACHA;AACA;AACA;AACA,ACHA;AACA;AACA;AACA,ACHA;AACA;AACA;AACA,ACHA;AACA;AACA;AACA",
+  "file": "b-c-d.js",
+  "sourcesContent": [
+    "define('nodeps',[],function() {\n    console.log('Module Nodeps');\n});\n",
+    "define('a',['nodeps'], function(nodeps) {\n    console.log('Module A');\n});\n",
+    "define('b1',[],function() {\n    console.log('Module B1');\n});\n",
+    "define('b2',[],function() {\n    console.log('Module B2');\n});\n",
+    "define('b',['nodeps', 'a', 'b1', 'b2'], function(nodeps, a, b1, b2) {\n    console.log('Module B');\n});\n",
+    "define('c',['b', 'b1'], function(b, b1) {\n    console.log('Module C');\n});\n",
+    "define('d',['b1'], function(b1) {\n    console.log('Module D');\n});\n"
+  ]
+}
