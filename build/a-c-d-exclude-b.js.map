@@ -1,0 +1,14 @@
+{
+  "version": 3,
+  "sources": [
+    "c.js",
+    "d.js"
+  ],
+  "names": [],
+  "mappings": "AAAA;AACA;AACA;AACA,ACHA;AACA;AACA;AACA",
+  "file": "a-c-d-exclude-b.js",
+  "sourcesContent": [
+    "define('c',['b', 'b1'], function(b, b1) {\n    console.log('Module C');\n});\n",
+    "define('d',['b1'], function(b1) {\n    console.log('Module D');\n});\n"
+  ]
+}
