@@ -11,11 +11,7 @@ function log(name, message) {
 }
 
 function writeLog(name) {
-    let result = '';
-    for (var i = 0; i < logs[name].length; i++) {
-        result += `${logs[name][i]}\n`;
-    }
-    fs.writeFileSync(`build/${name}.log`, result);
+    fs.writeFileSync(`build/${name}.log`, logs[name].join("\n"));
 }
 
 function runBuild(config) {
